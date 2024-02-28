@@ -1,57 +1,38 @@
-import React, { RefObject } from 'react';
+'use client'
+import React from 'react';
 import Typed from 'typed.js';
 
-'use '
-interface TypedReactHeaderProps {
-  strings: string[];
-}
+function TypedReactHeader() {
+  // Create reference to store the DOM element containing the animation
+  const el = React.useRef(null);
 
-interface TypedReactHeaderState {
-  typed?: Typed;
-}
-
-class TypedReactHeader extends React.Component<TypedReactHeaderProps, TypedReactHeaderState> {
-  private el: RefObject<HTMLSpanElement> = React.createRef();
-
-  componentDidMount() {
-    const { strings } = this.props;
-    const options = {
-      strings: strings,
+  React.useEffect(() => {
+    const typed = new Typed(el.current, {
+      strings: [' with your bets. ', ' wtih your savings. ', ' with better habbits. ', 'with your friends.'],
       typeSpeed: 50,
-      backSpeed: 50
+      backSpeed: 35,
+      backDelay: 1500,
+      startDelay: 500,
+      loop: true,
+      loopCount: Infinity,
+      smartBackspace: false,
+      
+    });
+
+    return () => {
+      // Destroy Typed instance during cleanup to stop animation
+      typed.destroy();
     };
+  }, []);
 
-    if (this.el.current) {
-      this.setState({ typed: new Typed(this.el.current, options) });
-    }
-  }
+  return (
 
-  componentWillUnmount() {
-    if (this.state.typed) {
-      this.state.typed.destroy();
-    }
-  }
-
-  //is c
-
-  render() {
-    return (
-      <div className="wrap">
-        <h1>Typed.js</h1>
-        <div className="type-wrap">
-          <span
-            style={{ whiteSpace: 'pre' }}
-            ref={this.el}
-          />
-        </div>
-        <button onClick={() => this.state.typed?.toggle()}>Toggle</button>
-        <button onClick={() => this.state.typed?.start()}>Start</button>
-        <button onClick={() => this.state.typed?.stop()}>Stop</button>
-        <button onClick={() => this.state.typed?.reset()}>Reset</button>
-        <button onClick={() => this.state.typed?.destroy()}>Destroy</button>
-      </div>
-    );
-  }
+    <div className="App h1 mb-4 text-red-600" style={{ fontSize: '2em' }} data-aos="fade-up">
+      <h1 className="h1 mb-4" style={{ fontSize: '2.5em' }}>CatchFire</h1>
+      <span ref={el} style={{ fontSize: '1.5em' }} />
+     {/* <span style={{ fontSize: '1.5em' }}> 🔥</span> */}
+    </div>
+  );
 }
 
-export default TypedReactHeader;
+export default TypedReactHeader
